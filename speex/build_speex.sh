@@ -107,7 +107,7 @@ lipo -info "${BIN_PATH}/lib/lib${LIB}dsp.a"
 PRECOMPILED_PATH=${CURRENT_PATH}/precompiled/${LIB_DIR}
 rm -rf "${PRECOMPILED_PATH}"
 mkdir -p "${PRECOMPILED_PATH}"
-cp -a "${BIN_PATH}/include/speex/" "${PRECOMPILED_PATH}"
+cp -a "${BIN_PATH}/include/" "${PRECOMPILED_PATH}"
 cp -a "${BIN_PATH}/lib/lib${LIB}.a" "${PRECOMPILED_PATH}"
 cp -a "${BIN_PATH}/lib/lib${LIB}dsp.a" "${PRECOMPILED_PATH}"
 

@@ -101,7 +101,7 @@ lipo -info "${libfile}"
 PRECOMPILED_PATH=${CURRENT_PATH}/precompiled/${LIB_DIR}
 rm -rf "${PRECOMPILED_PATH}"
 mkdir -p "${PRECOMPILED_PATH}"
-cp -a "${BIN_PATH}/include/ogg/" "${PRECOMPILED_PATH}"
+cp -a "${BIN_PATH}/include/" "${PRECOMPILED_PATH}"
 cp -a "${libfile}" "${PRECOMPILED_PATH}"
 
 echo "=*= Done =*="
