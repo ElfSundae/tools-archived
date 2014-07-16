@@ -5,4 +5,4 @@ scripts
 
 > http://www.xiph.org
 
-> building scripts, and precompiled libraries.
+> building scripts for iOS, and precompiled libraries.
