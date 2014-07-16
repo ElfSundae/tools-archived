@@ -61,24 +61,26 @@ do
 	export CXXFLAGS="$CFLAGS"
 	export LDFLAGS="$CFLAGS"
 	export LD=$CC
-	
+
 	./configure --prefix="${PREFIX}" --host=${HOST} --build=${BUILD} --disable-shared --enable-static
 	make clean
 	make && make install
-	
+
 	echo "=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*"
-	libfile="${PREFIX}/lib/${LIB}.a"
+	libfile=${PREFIX}/lib/${LIB}.a
 	if [ ! -f "${libfile}" ]; then
 		echo "${ARCH} Error."
 		exit -1
 	fi
-	
+
 	lipo -info "${libfile}"
 	echo "=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*"
-	
+
 	LIBFILES="${libfile} ${LIBFILES}"
 done
 echo ""
+
+libfile=${BIN_PATH}/lib/${LIB}.a
 
 rm -rf "${BIN_PATH}"
 mkdir "${BIN_PATH}"
@@ -86,8 +88,20 @@ mkdir "${BIN_PATH}"
 cp -r "${BUILD_PATH}/${LIB}/${ARCHS[0]}/include/" "${BIN_PATH}/include/"
 # create fat libraries
 mkdir "${BIN_PATH}/lib"
-lipo -create ${LIBFILES} -output "${BIN_PATH}/lib/${LIB}.a"
+lipo -create ${LIBFILES} -output "${libfile}"
+
+if [ ! -f "${libfile}" ]; then
+	echo "lipo Error."
+	exit -1
+fi
 # check architectures information
-lipo -info "${BIN_PATH}/lib/${LIB}.a"
+lipo -info "${libfile}"
+
+# copy to precompiled directory
+PRECOMPILED_PATH=${CURRENT_PATH}/precompiled/${LIB_DIR}
+rm -rf "${PRECOMPILED_PATH}"
+mkdir -p "${PRECOMPILED_PATH}"
+cp -a "${BIN_PATH}/include/ogg/" "${PRECOMPILED_PATH}"
+cp -a "${libfile}" "${PRECOMPILED_PATH}"
 
 echo "=*= Done =*="
