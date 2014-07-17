@@ -3,6 +3,5 @@ scripts
 
 ### libogg and speex
 
-> http://www.xiph.org
-
-> building scripts for iOS, and precompiled libraries.
+> [xiph.org](http://www.xiph.org/)<br>
+> building scripts for iOS and OSX, and precompiled frameworks.

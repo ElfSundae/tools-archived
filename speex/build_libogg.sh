@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Build libogg for iOS.
+# Build libogg for iOS and OSX.
 #
 # Xcode with command line tool installed, iOS 6.1, iOS 7.1, OSX 10.9 SDK required.
 #
@@ -13,14 +13,14 @@ LIB="libogg"
 LIB_VERSION="1.3.2"
 LIB_DIR=${LIB}-${LIB_VERSION}
 DEVELOPER_ROOT=`xcode-select -print-path`
-CURRENT_PATH=`pwd`
+CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BUILD_PATH=${CURRENT_PATH}/build
 BIN_PATH=${BUILD_PATH}/${LIB_DIR}
 LIBFILES=""
 BUILD="x86_64-apple-darwin"
-
 ARCHS=("i386" "x86_64" "armv7" "armv7s" "arm64")
-# ARCHS=("i386")
+
+cd "${CURRENT_PATH}"
 
 if [ ! -d "${LIB_DIR}" ]; then
 	file="${LIB_DIR}.tar.gz"
@@ -32,7 +32,7 @@ if [ ! -d "${LIB_DIR}" ]; then
 	tar jxf $file
 fi
 
-cd ${LIB_DIR}
+cd "${LIB_DIR}"
 
 for ARCH in ${ARCHS[@]}
 do
@@ -66,16 +66,13 @@ do
 	make clean
 	make && make install
 
-	echo "=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*"
 	libfile=${PREFIX}/lib/${LIB}.a
 	if [ ! -f "${libfile}" ]; then
 		echo "${ARCH} Error."
 		exit -1
 	fi
 
-	lipo -info "${libfile}"
-	echo "=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*"
-
+	# lipo -info "${libfile}"
 	LIBFILES="${libfile} ${LIBFILES}"
 done
 echo ""
@@ -95,13 +92,20 @@ if [ ! -f "${libfile}" ]; then
 	exit -1
 fi
 # check architectures information
-lipo -info "${libfile}"
+#lipo -info "${libfile}"
 
-# copy to precompiled directory
-PRECOMPILED_PATH=${CURRENT_PATH}/precompiled/${LIB_DIR}
-rm -rf "${PRECOMPILED_PATH}"
-mkdir -p "${PRECOMPILED_PATH}"
-cp -a "${BIN_PATH}/include/" "${PRECOMPILED_PATH}"
-cp -a "${libfile}" "${PRECOMPILED_PATH}"
+# build framework
+FRAMEWORK_NAME="ogg" # use lower-case to prevent from #include issue
+FRAMEWORK_PATH=${CURRENT_PATH}/precompiled/${FRAMEWORK_NAME}.framework
+
+rm -rf "${FRAMEWORK_PATH}"
+mkdir -p "${FRAMEWORK_PATH}/Versions/A/Headers"
+
+ln -sfh A "${FRAMEWORK_PATH}/Versions/Current"
+ln -sfh Versions/Current/Headers "${FRAMEWORK_PATH}/Headers"
+ln -sfh "Versions/Current/${FRAMEWORK_NAME}" "${FRAMEWORK_PATH}/${FRAMEWORK_NAME}"
+cp -a "${BUILD_PATH}/${LIB}/${ARCHS[0]}/include/ogg/" "${FRAMEWORK_PATH}/Versions/A/Headers"
+lipo -create ${LIBFILES} -output "${FRAMEWORK_PATH}/Versions/A/${FRAMEWORK_NAME}"
+lipo -info "${FRAMEWORK_PATH}/Versions/A/${FRAMEWORK_NAME}"
 
 echo "=*= Done =*="

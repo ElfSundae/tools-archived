@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Build Speex for iOS.
+# Build Speex for iOS and OSX.
 #
 # Xcode with command line tool installed, iOS 6.1, iOS 7.1, OSX 10.9 SDK required.
 #
@@ -14,15 +14,15 @@ LIB_VERSION="1.2rc1"
 OGG="libogg-1.3.2"
 LIB_DIR=${LIB}-${LIB_VERSION}
 DEVELOPER_ROOT=`xcode-select -print-path`
-CURRENT_PATH=`pwd`
+CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BUILD_PATH=${CURRENT_PATH}/build
 BIN_PATH=${BUILD_PATH}/${LIB_DIR}
 LIBFILES=""
 LIBFILES_DSP=""
 BUILD="x86_64-apple-darwin"
-
 ARCHS=("i386" "x86_64" "armv7" "armv7s" "arm64")
-# ARCHS=("i386")
+
+cd "${CURRENT_PATH}"
 
 if [ ! -f "${BUILD_PATH}/${OGG}/lib/libogg.a" ]; then
 	sh ./build_libogg.sh
@@ -38,7 +38,7 @@ if [ ! -d "${LIB_DIR}" ]; then
 	tar jxf $file
 fi
 
-cd ${LIB_DIR}
+cd "${LIB_DIR}"
 
 for ARCH in ${ARCHS[@]}
 do
@@ -76,16 +76,13 @@ do
 	make clean
 	make && make install
 
-	echo "=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*"
 	libfile="${PREFIX}/lib/lib${LIB}.a"
 	if [ ! -f "${libfile}" ]; then
 		echo "${ARCH} Error."
 		exit -1
 	fi
 
-	lipo -info "${libfile}"
-	echo "=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*"
-
+	# lipo -info "${libfile}"
 	LIBFILES="${libfile} ${LIBFILES}"
 	LIBFILES_DSP="${PREFIX}/lib/lib${LIB}dsp.a ${LIBFILES_DSP}"
 done
@@ -100,15 +97,24 @@ mkdir "${BIN_PATH}/lib"
 lipo -create ${LIBFILES} -output "${BIN_PATH}/lib/lib${LIB}.a"
 lipo -create ${LIBFILES_DSP} -output "${BIN_PATH}/lib/lib${LIB}dsp.a"
 # check architectures information
-lipo -info "${BIN_PATH}/lib/lib${LIB}.a"
-lipo -info "${BIN_PATH}/lib/lib${LIB}dsp.a"
+# lipo -info "${BIN_PATH}/lib/lib${LIB}.a"
+# lipo -info "${BIN_PATH}/lib/lib${LIB}dsp.a"
 
-# copy to precompiled directory
-PRECOMPILED_PATH=${CURRENT_PATH}/precompiled/${LIB_DIR}
-rm -rf "${PRECOMPILED_PATH}"
-mkdir -p "${PRECOMPILED_PATH}"
-cp -a "${BIN_PATH}/include/" "${PRECOMPILED_PATH}"
-cp -a "${BIN_PATH}/lib/lib${LIB}.a" "${PRECOMPILED_PATH}"
-cp -a "${BIN_PATH}/lib/lib${LIB}dsp.a" "${PRECOMPILED_PATH}"
+# build framework
+FRAMEWORK_NAME="speex" # use lower-case to prevent from #include issue
+FRAMEWORK_PATH=${CURRENT_PATH}/precompiled/${FRAMEWORK_NAME}.framework
+
+rm -rf "${FRAMEWORK_PATH}"
+mkdir -p "${FRAMEWORK_PATH}/Versions/A/Headers"
+
+ln -sfh A "${FRAMEWORK_PATH}/Versions/Current"
+ln -sfh Versions/Current/Headers "${FRAMEWORK_PATH}/Headers"
+ln -sfh "Versions/Current/${FRAMEWORK_NAME}" "${FRAMEWORK_PATH}/${FRAMEWORK_NAME}"
+ln -sfh "Versions/Current/${FRAMEWORK_NAME}dsp" "${FRAMEWORK_PATH}/${FRAMEWORK_NAME}dsp"
+cp -a "${BUILD_PATH}/${LIB}/${ARCHS[0]}/include/speex/" "${FRAMEWORK_PATH}/Versions/A/Headers"
+lipo -create ${LIBFILES} -output "${FRAMEWORK_PATH}/Versions/A/${FRAMEWORK_NAME}"
+lipo -create ${LIBFILES_DSP} -output "${FRAMEWORK_PATH}/Versions/A/${FRAMEWORK_NAME}dsp"
+
+lipo -info "${FRAMEWORK_PATH}/Versions/A/${FRAMEWORK_NAME}"
 
 echo "=*= Done =*="
