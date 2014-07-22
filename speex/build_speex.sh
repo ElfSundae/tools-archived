@@ -16,7 +16,8 @@ LIB_DIR=${LIB}-${LIB_VERSION}
 DEVELOPER_ROOT=`xcode-select -print-path`
 CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BUILD_PATH=${CURRENT_PATH}/build
-BIN_PATH=${BUILD_PATH}/${LIB_DIR}
+BIN_PATH=${CURRENT_PATH}/precompiled/${LIB_DIR}
+OGG_PATH=${CURRENT_PATH}/precompiled/${OGG}
 LIBFILES=""
 LIBFILES_DSP=""
 BUILD="x86_64-apple-darwin"
@@ -24,7 +25,7 @@ ARCHS=("i386" "x86_64" "armv7" "armv7s" "arm64")
 
 cd "${CURRENT_PATH}"
 
-if [ ! -f "${BUILD_PATH}/${OGG}/lib/libogg.a" ]; then
+if [ ! -f "${OGG_PATH}/lib/libogg.a" ]; then
 	sh ./build_libogg.sh
 fi
 
@@ -71,7 +72,7 @@ do
 	./configure --prefix="${PREFIX}" --host=${HOST} --build=${BUILD} \
 		--disable-shared --enable-static \
 			-disable-oggtest -enable-fixed-point -disable-float-api \
-				--with-ogg="${BUILD_PATH}/${OGG}"
+				--with-ogg="${OGG_PATH}"
 
 	make clean
 	make && make install
