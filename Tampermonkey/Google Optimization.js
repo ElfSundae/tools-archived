@@ -22,8 +22,13 @@ if (document.URL.match(/[\?#&]q=/g)) {
 			if (null != ires_div) {
 				clearInterval(timer);
 				var links = ires_div.getElementsByTagName('a');
-				Array.prototype.slice.call(links).every(function(a) {
+				Array.prototype.slice.call(links).forEach(function(a) {
+					console.log(a);
 					a.removeAttribute("onmousedown");
+					// var url = a.getAttribute('data-href');
+					// if (null != url) {
+					// 	a.setAttribute('href', url);
+					// }
 				})
 				var resultStats = document.getElementById('resultStats');
 				resultStats.innerHTML += "<nobr>&nbsp;<i>Removed URL tracker.</i>&nbsp;</nobr>"
