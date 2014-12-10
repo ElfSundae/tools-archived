@@ -51,7 +51,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>tell application "iTunes"	-- ignoring application responses		if player state is not stopped then		display notification "已删除" with title (album of current track as string) &amp; "  (" &amp; (artist of current track as string) &amp; ")" sound name "default"		delete current track		delay 2		play	else		display notification with title "当前没有播放的歌曲" sound name "default"	end if	-- end ignoringend tell</string>
+					<string>tell application "iTunes"	-- ignoring application responses		if player state is playing then		display notification "已删除" with title (album of current track as string) &amp; "  (" &amp; (artist of current track as string) &amp; ")" sound name "default"		set trackLocation to location of current track		delete current track		tell application "Finder" to delete trackLocation		delay 2		play	else		display notification with title "当前没有播放的歌曲" sound name "default"	end if	-- end ignoringend tell</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>

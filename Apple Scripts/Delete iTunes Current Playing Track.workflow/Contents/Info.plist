@@ -8,7 +8,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>iTunes_Del&amp;Play</string>
+				<string>Delete iTunes Current Playing Track</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>runWorkflowAsService</string>
