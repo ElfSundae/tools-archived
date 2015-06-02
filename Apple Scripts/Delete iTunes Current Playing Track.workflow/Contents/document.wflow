@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>AMApplicationBuild</key>
-	<string>381</string>
+	<string>409.2</string>
 	<key>AMApplicationVersion</key>
-	<string>2.4</string>
+	<string>2.5</string>
 	<key>AMDocumentVersion</key>
 	<string>2</string>
 	<key>actions</key>
@@ -51,7 +51,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>tell application "iTunes"	-- ignoring application responses		if player state is playing then		display notification "已删除" with title (album of current track as string) &amp; "  (" &amp; (artist of current track as string) &amp; ")" sound name "default"		set trackLocation to location of current track		delete current track		tell application "Finder" to delete trackLocation		delay 2		play	else		display notification with title "当前没有播放的歌曲" sound name "default"	end if	-- end ignoringend tell</string>
+					<string>tell application "iTunes"	-- ignoring application responses		if player state is playing then		set del_track to current track		set track_title to name of del_track		set track_artist to artist of del_track		set track_location to location of del_track		set track_databaseID to (get database ID of del_track)				# delete track from current playlist		delete del_track		# move to Trash so that we can restore if regret		tell application "Finder" to move track_location to trash		# delete from Library		delete (some track of library playlist 1 whose database ID is track_databaseID)		# notify result		display notification "Deleted" with title track_title &amp; "  (" &amp; track_artist &amp; ")" sound name "default"		# delay for showing notification		delay 2		# continue to play track		play	else		display notification with title "There is no current playing track" sound name "default"	end if	-- end ignoringend tell</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -105,9 +105,9 @@ end run</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>449.500000:387.000000</string>
+				<string>449.000000:647.000000</string>
 				<key>nibPath</key>
-				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/English.lproj/main.nib</string>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
 			<key>isViewVisible</key>
 			<true/>
