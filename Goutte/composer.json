@@ -1,0 +1,13 @@
+{
+    "name": "elfsundae/goutte",
+    "description": "php爬虫",
+    "authors": [
+        {
+            "name": "Elf Sundae",
+            "email": "elf.sundae@gmail.com"
+        }
+    ],
+    "require": {
+        "fabpot/goutte": "^3.1"
+    }
+}
