@@ -1,12 +1,14 @@
 #!/bin/sh
-
 #
-# Build libogg for iOS and OSX.
 #
-# Xcode with command line tool installed, iOS 6.1, iOS 7.1, OSX 10.9 SDK required.
+# Build libogg for iOS and OS X.
+#
+# Require Xcode installed command line tool.
 #
 # Elf Sundae, www.0x123.com
-# Jul 14, 2014
+#
+# 2014-07-14	Create script.
+# 2016-07-19	Automatically detect sdk versions.
 #
 
 LIB="libogg"
@@ -19,6 +21,15 @@ BIN_PATH=${CURRENT_PATH}/precompiled/${LIB_DIR}
 LIBFILES=""
 BUILD="x86_64-apple-darwin"
 ARCHS=("i386" "x86_64" "armv7" "armv7s" "arm64")
+
+IOS_SDK_VERSION=$(/usr/bin/xcodebuild -showsdks | sed -e '/./{H;$!d;}' -e 'x;/iOS SDKs/!d;' | grep -o '[0-9]*\.[0-9]* ' | xargs);
+IOS_SIMULATOR_SDK_VERSION=$(/usr/bin/xcodebuild -showsdks | sed -e '/./{H;$!d;}' -e 'x;/iOS Simulator SDKs/!d;' | grep -o '[0-9]*\.[0-9]* ' | xargs);
+OSX_SDK_VERSION=$(/usr/bin/xcodebuild -showsdks | sed -e '/./{H;$!d;}' -e 'x;/OS X SDKs/!d;' | grep -o '[0-9]*\.[0-9]* ' | xargs);
+
+# echo "--${IOS_SDK_VERSION}--"
+# echo "--${OSX_SDK_VERSION}--"
+# echo "--${IOS_SIMULATOR_SDK_VERSION}--"
+# exit
 
 cd "${CURRENT_PATH}"
 
@@ -39,15 +50,15 @@ do
 	if [ "${ARCH}" == "i386" ]; then
 		PLATFORM="iPhoneSimulator"
 		HOST="i386-apple-darwin"
-		SDK_VERSION="6.1"
+		SDK_VERSION="$IOS_SIMULATOR_SDK_VERSION"
 	elif [ "${ARCH}" == "x86_64" ]; then
 		PLATFORM="MacOSX"
 		HOST="x86_64-apple-darwin"
-		SDK_VERSION="10.9"
+		SDK_VERSION="$OSX_SDK_VERSION"
 	else
 		PLATFORM="iPhoneOS"
 		HOST="arm-apple-darwin"
-		SDK_VERSION="7.1"
+		SDK_VERSION="$IOS_SDK_VERSION"
 	fi
 
 	SDK=${DEVELOPER_ROOT}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDK_VERSION}.sdk
@@ -80,11 +91,11 @@ echo ""
 libfile=${BIN_PATH}/lib/${LIB}.a
 
 rm -rf "${BIN_PATH}"
-mkdir "${BIN_PATH}"
+mkdir -p "${BIN_PATH}"
 # copy headers
 cp -r "${BUILD_PATH}/${LIB}/${ARCHS[0]}/include/" "${BIN_PATH}/include/"
 # create fat libraries
-mkdir "${BIN_PATH}/lib"
+mkdir -p "${BIN_PATH}/lib"
 lipo -create ${LIBFILES} -output "${libfile}"
 
 if [ ! -f "${libfile}" ]; then

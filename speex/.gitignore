@@ -2,3 +2,4 @@
 /*/
 !*.sh
 !/precompiled/
+!*.md

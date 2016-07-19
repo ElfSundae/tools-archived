@@ -1,12 +1,14 @@
 #!/bin/sh
-
 #
-# Build Speex for iOS and OSX.
 #
-# Xcode with command line tool installed, iOS 6.1, iOS 7.1, OSX 10.9 SDK required.
+# Build Speex for iOS and OS X.
+#
+# Require Xcode installed with command line tool.
 #
 # Elf Sundae, www.0x123.com
-# Jul 14, 2014
+#
+# 2014-07-14	Create script.
+# 2016-07-19	Automatically detect sdk versions.
 #
 
 LIB="speex"
@@ -22,6 +24,10 @@ LIBFILES=""
 LIBFILES_DSP=""
 BUILD="x86_64-apple-darwin"
 ARCHS=("i386" "x86_64" "armv7" "armv7s" "arm64")
+
+IOS_SDK_VERSION=$(/usr/bin/xcodebuild -showsdks | sed -e '/./{H;$!d;}' -e 'x;/iOS SDKs/!d;' | grep -o '[0-9]*\.[0-9]* ' | xargs);
+IOS_SIMULATOR_SDK_VERSION=$(/usr/bin/xcodebuild -showsdks | sed -e '/./{H;$!d;}' -e 'x;/iOS Simulator SDKs/!d;' | grep -o '[0-9]*\.[0-9]* ' | xargs);
+OSX_SDK_VERSION=$(/usr/bin/xcodebuild -showsdks | sed -e '/./{H;$!d;}' -e 'x;/OS X SDKs/!d;' | grep -o '[0-9]*\.[0-9]* ' | xargs);
 
 cd "${CURRENT_PATH}"
 
@@ -46,15 +52,15 @@ do
 	if [ "${ARCH}" == "i386" ]; then
 		PLATFORM="iPhoneSimulator"
 		HOST="i386-apple-darwin"
-		SDK_VERSION="6.1"
+		SDK_VERSION="$IOS_SIMULATOR_SDK_VERSION"
 	elif [ "${ARCH}" == "x86_64" ]; then
 		PLATFORM="MacOSX"
 		HOST="x86_64-apple-darwin"
-		SDK_VERSION="10.9"
+		SDK_VERSION="$OSX_SDK_VERSION"
 	else
 		PLATFORM="iPhoneOS"
 		HOST="arm-apple-darwin"
-		SDK_VERSION="7.1"
+		SDK_VERSION="$IOS_SDK_VERSION"
 	fi
 
 	SDK=${DEVELOPER_ROOT}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDK_VERSION}.sdk
