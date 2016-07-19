@@ -9,8 +9,8 @@
 // @run-at      document-end
 // @include     /^https?://www\.google\.com
 // @date        28/07/2014
-// @modified    04/06/2016
-// @version     1.0.1
+// @modified    19/07/2016
+// @version     1.0.2
 // ==/UserScript==
 
 /**
