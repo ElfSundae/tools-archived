@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# 当接收到 git-push 时自动部署 web 应用。
+#
+# Elf Sundae, www.0x123.com 2015-05-22
+#
+
+DEPLOY_ROOT="/data/www"
+
+REPOSITORY_NAME=$(basename "$PWD")
+REPOSITORY_NAME=${REPOSITORY_NAME%.git}
+
+while read oldrev newrev ref
+do
+    echo "==============================================="
+
+    BRANCH=$(git rev-parse --symbolic --abbrev-ref $ref)
+
+    if [ "$BRANCH" == 'master' ] || [ "$BRANCH" == 'mtest' ]; then
+
+        unset GIT_DIR
+
+        DEPLOY_PATH="$DEPLOY_ROOT/${BRANCH}-${REPOSITORY_NAME}"
+        if [ "$BRANCH" == 'master' ]; then
+            DEPLOY_PATH="$DEPLOY_ROOT/$REPOSITORY_NAME"
+        fi
+
+        echo "Deploying \"$BRANCH\" to \"$DEPLOY_PATH\" ..."
+
+        if [ ! -d "$DEPLOY_PATH" ]; then
+            git clone -b "$BRANCH" --single-branch "$PWD" "$DEPLOY_PATH"
+        else
+            cd "$DEPLOY_PATH"
+            git reset --hard HEAD
+            git clean -fd
+            git pull origin "$BRANCH"
+        fi
+
+        if [ -f "$DEPLOY_PATH/composer.json" ]; then
+            cd "$DEPLOY_PATH"
+            composer install --no-dev --profile
+        fi
+
+        echo "Finished deploying."
+    else
+        echo "Received branch \"$BRANCH\""
+    fi
+
+    echo "==============================================="
+done
