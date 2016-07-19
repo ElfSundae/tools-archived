@@ -7,7 +7,8 @@
  */
 
 // $tree = dir_tree('/data/www/test.0x123.com/public/tmp/mm-wangqiulei', ['html', '*.php', 'index*'], true);
-$tree = dir_tree('/data/www/test.0x123.com/public/tmp/mm-wangqiulei', '*', true);
+$tree = dir_tree('/var/tmp', '*', true);
+
 print_r($tree);
 
 /**
@@ -17,16 +18,16 @@ print_r($tree);
 function dir_tree($dir, $extension = '*', $recursive = false) {
 	$result = array();
 	$dir = rtrim($dir, '/');
-	
+
 	if (!is_string($extension) && !is_array($extension)) {
 		$extension = '';
 	}
-	
+
 	if (!file_exists($dir) || !is_dir($dir)) {
 		return $result;
 	}
-	
-	
+
+
 	$handle = opendir($dir);
 	if (!$handle) {
 		return $result;
@@ -36,9 +37,9 @@ function dir_tree($dir, $extension = '*', $recursive = false) {
 		if (startsWith($entry, '.')) {
 			continue;
 		}
-		
+
 		$fullpath = $dir . '/' . $entry;
-		
+
 		if (is_dir($fullpath)) {
 			if ($recursive) {
 				$sub = dir_tree($fullpath, $extension, $recursive);
@@ -62,7 +63,7 @@ function dir_tree($dir, $extension = '*', $recursive = false) {
 						}
 					}
 				}
-				
+
 			} else { // string
 				$type = strtolower($extension);
 				if (strpos($type, '*') !== false) {
@@ -81,7 +82,7 @@ function dir_tree($dir, $extension = '*', $recursive = false) {
 		}
 	}
 	closedir($handle);
-	
+
 	return $result;
 }
 
