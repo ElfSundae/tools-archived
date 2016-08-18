@@ -6,10 +6,32 @@ HOSTS=""
 # http://stackoverflow.com/a/23342259/521946
 exe() { echo '$' "${@:q}" ; "$@" ; }
 
+usage() {
+    echo "Avariable Arguments: google apple"
+    exit
+}
+
+if [ "$#" -ne 1 ]; then
+    usage
+fi
+
 for arg in "$@"; do
     if [[ $arg == "-h" || $arg == "--help" ]]; then
-        echo "Avariable Arguments: apple"
-        exit
+        usage
+    fi
+done
+
+#####################################################################################
+# Google hosts
+######################################################################################
+
+for arg in "$@"; do
+    if [[ $arg == "google" ]]; then
+        exe cd "/data/projects/github/hosts"
+
+        exe git pull
+
+        HOSTS+=$(cat hosts)"\n"
     fi
 done
 
@@ -45,18 +67,11 @@ for arg in "$@"; do
 done
 
 #####################################################################################
-# Google hosts
-######################################################################################
-
-exe cd "/data/projects/github/hosts"
-
-exe git pull
-
-HOSTS+=$(cat hosts)"\n"
-
-
 #####################################################################################
-#####################################################################################
+
+if [[ "$HOSTS" == "" ]]; then
+    usage
+fi
 
 FILE="/tmp/refresh-hosts"
 
