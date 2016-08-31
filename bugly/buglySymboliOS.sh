@@ -3,16 +3,17 @@
 # Copyright 2015-2016 Bugly, Tencent Inc. All rights reserved.
 # 
 # Usage:
-#     buglySymboliOS.sh <dSYM_path> [out.zip]
+#     buglySymbolIOS.sh <dSYM_path> [out.zip]
 # 
 # Extract symbols from dSYM file.
-# It call 'buglySymboliOS.jar', make sure there is Java environment on the system.
+# It call 'buglySymbolIOS.jar', make sure there is Java environment on the system.
 #
 #
 
 function printIndroduction {
     echo "Bugly符号表工具IOS版 -- Bugly Symtab Tool for IOS"
     echo "适用平台 -- Applicable platform: Linux"
+    echo "版本 -- Version: 2.0.0"
     echo "Copyright 2015-2016 Bugly, Tencent Inc. All rights reserved."
     echo ""
 }
@@ -22,7 +23,7 @@ function printUsage(){
     echo "----"
     echo "$1"
     echo "----"
-    echo "用法 -- Usage: buglySymboliOS.sh <dSYM_path> [out.zip]"
+    echo "用法 -- Usage: buglySymbolIOS.sh <dSYM_path> [out.zip]"
     echo ""
     echo "参数说明 -- Introduction for arguments"
     echo "<dSYM_path>："
@@ -37,7 +38,11 @@ function printUsage(){
 
 # function - extract
 function extractSymbol() {
-    java -Xms512m -Xmx1024m -Dfile.encoding=UTF8 -jar "$JarPath" -i $*
+    if [ -z "$2" ];then
+        java -Dfile.encoding=UTF8 -jar "$JarPath" -i "$1"
+    else
+        java -Dfile.encoding=UTF8 -jar "$JarPath" -i "$1" -o "$2"
+    fi
 }
 
 # main
@@ -57,7 +62,7 @@ fi
 # Check the jar
 #ShellDir=$(cd `dirname $0`; pwd)
 pathName=$(cd `dirname $0`; pwd)
-JarName="buglySymboliOS.jar"
+JarName="buglySymbolIOS.jar"
 JarPath="$pathName/$JarName"
 if [ ! -f "$JarPath" ]; then
     echo "----"
@@ -67,5 +72,19 @@ if [ ! -f "$JarPath" ]; then
     exit 2
 fi 
 
+# Validate the input argument
+if [ -z "$1" ];then
+    printUsage "请输入dSYM文件！-- Please input dSYM file!"
+else 
+    dSYMPath="$1"
+fi
+
+# Check the output argument
+if [ $# -gt 1 ]; then
+    outPath="$2"
+else 
+    outPath=""
+fi
+
 # call the function to extract symbols
-extractSymbol $*
+extractSymbol "$dSYMPath" "$outPath"
