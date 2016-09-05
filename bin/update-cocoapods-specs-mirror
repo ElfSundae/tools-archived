@@ -5,6 +5,7 @@ REV=$(git log -1 --format="%h")
 
 git fetch -p origin
 git push mirror --all
+git push mirror --tags
 
 REV_NEW=$(git log -1 --format="%h")
 
