@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cd /data/dev/mirror/CocoaPods-Specs.git
+REV=$(git log -1 --format="%h")
+
+git fetch -p origin
+git push mirror --all
+
+REV_NEW=$(git log -1 --format="%h")
+
+osascript -e "display notification \"${REV} --> ${REV_NEW}\" with title \"Updated CocoaPods Specs mirror.\""
