@@ -26,10 +26,14 @@ for f in *.ipa; do
     fi
 
     format=$(sips -g format "$oFile" | tail -n1 | cut -d" " -f4)
+    if [[ "$format" == "jpeg" ]]; then
+        format="jpg"
+    fi
+
     outputFile="${oFile}.${format}"
     mv "$oFile" "$outputFile"
 
-    if [ $format == "png" ]; then
+    if [ "$format" == "png" ]; then
         # echo "$outputFile"
         tmpFile="$outputFile.tmp"
         /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/pngcrush -revert-iphone-optimizations -q "$outputFile" "$tmpFile" 2>/dev/null
