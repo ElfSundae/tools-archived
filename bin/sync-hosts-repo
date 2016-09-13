@@ -1,0 +1,54 @@
+#!/bin/sh
+
+ROOT=/data/projects/hosts
+
+cd "$ROOT"
+
+### Google Amazon Dropbox Twitter Facebook, etc
+curl -o hosts https://raw.githubusercontent.com/racaljk/hosts/master/hosts
+echo ">> Updated racaljk/hosts"
+
+
+### Apple
+rm -rf AppleDNS
+git clone --branch=master --single-branch --depth=1 git@github.com:gongjianhui/AppleDNS.git
+
+if [[ -f "AppleDNS/fetch-timeout.py" ]]; then
+    cd AppleDNS
+
+    ip=$(export PYTHONIOENCODING=utf8; curl -s 'http://httpbin.org/ip' | python -c "import sys, json; print json.load(sys.stdin)['origin']")
+    echo ">> Got IP: $ip"
+
+    address=$(curl -s "http://freeapi.ipip.net/${ip}")
+    echo ">> Got address: $address"
+
+    cell=".unknown"
+    if [[ $address == *"联通"* ]]; then
+        cell="ChinaUnicom"
+    elif [[ $address == *"电信"* ]]; then
+        cell="ChinaNet"
+    elif [[ $address == *"移动"* ]]; then
+        cell="CMCC"
+    fi
+
+    jsonFile=${cell}.json
+    outputFile=Apple_${cell}
+
+    if [[ -f "$jsonFile" ]]; then
+        echo ">> Fetching Apple DNS timeout..."
+        python fetch-timeout.py "$jsonFile" >> /dev/null 2>&1
+
+        python export-configure.py hosts > "$ROOT/$outputFile"
+        echo ">> Updated $outputFile"
+    fi
+
+    cd "$ROOT"
+    rm -rf AppleDNS
+fi
+
+cd "$ROOT"
+git status
+git add .
+git commit -am "Updated via sync."
+git push origin master
+git push coding master
