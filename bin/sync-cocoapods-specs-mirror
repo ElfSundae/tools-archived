@@ -7,6 +7,8 @@ git fetch -p origin
 git push mirror --all
 git push mirror --tags
 
+pod repo update
+
 REV_NEW=$(git log -1 --format="%h")
 
 osascript -e "display notification \"${REV} --> ${REV_NEW}\" with title \"Updated CocoaPods Specs mirror.\""
