@@ -7,7 +7,7 @@
 	<key>DVTConsoleDebuggerInputTextFont</key>
 	<string>Menlo-Regular - 14.0</string>
 	<key>DVTConsoleDebuggerOutputTextColor</key>
-	<string>0.254902 0.8 0.270588 1</string>
+	<string>0.569596 0.518914 0.0747723 1</string>
 	<key>DVTConsoleDebuggerOutputTextFont</key>
 	<string>Menlo-Regular - 14.0</string>
 	<key>DVTConsoleDebuggerPromptTextColor</key>
@@ -27,7 +27,7 @@
 	<key>DVTConsoleTextInsertionPointColor</key>
 	<string>0.242686 1 0.0955439 1</string>
 	<key>DVTConsoleTextSelectionColor</key>
-	<string>0.419608 0.133333 0.160784 1</string>
+	<string>0.156863 0.156863 0.156863 1</string>
 	<key>DVTDebuggerInstructionPointerColor</key>
 	<string>0.420701 0.189216 0.346376 1</string>
 	<key>DVTMarkupTextBackgroundColor</key>
