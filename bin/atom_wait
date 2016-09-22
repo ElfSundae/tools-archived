@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Fix issue: crontab: subl -w: No such file or directory
+# https://gist.github.com/jpalmieri/ab767f81d2ee8bce3e7d
+
+atom -w $*
