@@ -1,0 +1,53 @@
+{
+    "createBy": "http://liujiacai.net/gooreplacer/",
+    "createAt": "Tue Dec 01 2015 19:42:12 GMT+0800 (CST)",
+    "rules_url": "https://raw.githubusercontent.com/ElfSundae/tools/master/config/gooreplacer.gson",
+    "updated_at": "2016-09-25T01:55:48+08:00",
+    "rules": {
+        "ajax.googleapis.com": {
+            "dstURL": "ajax.lug.ustc.edu.cn",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "fonts.googleapis.com": {
+            "dstURL": "fonts.gmirror.org",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "themes.googleusercontent.com": {
+            "dstURL": "google-themes.lug.ustc.edu.cn",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "fonts.gstatic.com": {
+            "dstURL": "fonts-gstatic.lug.ustc.edu.cn",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "platform.twitter.com/widgets.js": {
+            "dstURL": "cdn.rawgit.com/jiacai2050/gooreplacer/gh-pages/proxy/widgets.js",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "apis.google.com/js/api.js": {
+            "dstURL": "cdn.rawgit.com/jiacai2050/gooreplacer/gh-pages/proxy/api.js",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "apis.google.com/js/plusone.js": {
+            "dstURL": "cdn.rawgit.com/jiacai2050/gooreplacer/gh-pages/proxy/plusone.js",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "//*gravatar.com/avatar": {
+            "dstURL": "//cdn.v2ex.com/gravatar",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "google-analytics.com": {
+            "dstURL": "127.0.0.1",
+            "kind": "wildcard",
+            "enable": true
+        }
+    }
+}
