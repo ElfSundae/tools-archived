@@ -9,8 +9,8 @@
             "kind": "wildcard",
             "enable": true
         },
-        "fonts.googleapis.com": {
-            "dstURL": "fonts.gmirror.org",
+        "fonts.googleapis.com/css": {
+            "dstURL": "fonts.gmirror.org/css",
             "kind": "wildcard",
             "enable": true
         },
