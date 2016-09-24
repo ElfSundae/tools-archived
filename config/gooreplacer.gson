@@ -44,8 +44,8 @@
             "kind": "wildcard",
             "enable": true
         },
-        "google-analytics.com": {
-            "dstURL": "127.0.0.1",
+        "//www.google-analytics.com/analytics.js": {
+            "dstURL": "//127.0.0.1/404.page",
             "kind": "wildcard",
             "enable": true
         }
