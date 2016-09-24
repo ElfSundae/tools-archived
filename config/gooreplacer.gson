@@ -10,7 +10,7 @@
             "enable": true
         },
         "fonts.googleapis.com": {
-            "dstURL": "fonts.lug.ustc.edu.cn",
+            "dstURL": "fonts.gmirror.org",
             "kind": "wildcard",
             "enable": true
         },
@@ -45,6 +45,11 @@
             "enable": true
         },
         "//www.google-analytics.com/analytics.js": {
+            "dstURL": "//127.0.0.1/404.page",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "//www.google-analytics.com/ga.js": {
             "dstURL": "//127.0.0.1/404.page",
             "kind": "wildcard",
             "enable": true
