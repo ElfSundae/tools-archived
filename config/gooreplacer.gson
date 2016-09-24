@@ -10,7 +10,7 @@
             "enable": true
         },
         "fonts.googleapis.com": {
-            "dstURL": "fonts.gmirror.org",
+            "dstURL": "fonts.lug.ustc.edu.cn",
             "kind": "wildcard",
             "enable": true
         },
