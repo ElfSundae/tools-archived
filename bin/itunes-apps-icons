@@ -3,7 +3,7 @@
 # 抓取itunes下所有app的icon(1024尺寸)
 
 INPUT_DIR="$HOME/Music/iTunes/iTunes Media/Mobile Applications"
-OUTPUT_DIR="$HOME/Pictures/iTunes Apps Icons"
+OUTPUT_DIR="$HOME/Pictures/Resources/iTunes Apps Icons"
 
 if ! [ -d "$INPUT_DIR" ]; then
         echo "\"$INPUT_DIR\" does not exist." >&2
