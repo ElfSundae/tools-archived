@@ -10,7 +10,7 @@ SIZES+=( 29#nofile 29@2x#nofile 40@2x#nofile )
 SIZES+=( 29#ipad#nofile 29@2x#ipad#nofile 40#ipad#nofile 40@2x#ipad#nofile 50#ipad#nofile 50@2x#ipad#nofile )
 
 # 额外生成的尺寸，用于上传各个市场或开放平台
-OTHER_SIZES=( 16 28 32 50 80 108 120 180 200 300 512 1024 )
+OTHER_SIZES=( 16 28 32 50 60 80 108 120 180 200 300 512 1024 )
 
 if [ "$#" -ne 1 ]; then
     this=$(basename "$0")
