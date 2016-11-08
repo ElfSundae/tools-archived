@@ -10,7 +10,7 @@
             "enable": true
         },
         "fonts.googleapis.com/css": {
-            "dstURL": "fonts.gmirror.org/css",
+            "dstURL": "fonts.fengqi.me/css",
             "kind": "wildcard",
             "enable": true
         },
