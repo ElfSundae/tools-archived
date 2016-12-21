@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<folders>
+    <folder>
+        <title>Xcode</title>
+        <snippets>
+            <snippet>
+                <title>Code Separator</title>
+                <content>//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark - </content>
+            </snippet>
+            <snippet>
+                <title>Name Section</title>
+                <content>/// =============================================
+/// @name 
+/// =============================================
+</content>
+            </snippet>
+        </snippets>
+    </folder>
+</folders>
