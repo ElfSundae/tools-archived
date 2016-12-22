@@ -16,6 +16,18 @@
 /// =============================================
 </content>
             </snippet>
+            <snippet>
+                <title>-Wundeclared-selector</title>
+                <content>#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+#pragma clang diagnostic pop</content>
+            </snippet>
+            <snippet>
+                <title>-Wdocumentation</title>
+                <content>#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#pragma clang diagnostic pop</content>
+            </snippet>
         </snippets>
     </folder>
 </folders>
