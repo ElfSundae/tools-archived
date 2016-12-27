@@ -2,4 +2,4 @@
 
 cd "$(dirname "$0")"
 
-find ./Source -name "*.[hm]" -print0 | xargs -0 /usr/local/bin/uncrustify -c .uncrustify.cfg -l OC --no-backup
+find ./Source -name "*.[hm]" -print0 | xargs -0 /usr/local/bin/uncrustify -l OC --no-backup -c .uncrustify.cfg
