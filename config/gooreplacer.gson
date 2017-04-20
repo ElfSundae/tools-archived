@@ -9,18 +9,8 @@
             "kind": "wildcard",
             "enable": true
         },
-        "fonts.googleapis.com/css": {
-            "dstURL": "fonts.fengqi.me/css",
-            "kind": "wildcard",
-            "enable": true
-        },
         "themes.googleusercontent.com": {
             "dstURL": "google-themes.lug.ustc.edu.cn",
-            "kind": "wildcard",
-            "enable": true
-        },
-        "fonts.gstatic.com": {
-            "dstURL": "fonts-gstatic.lug.ustc.edu.cn",
             "kind": "wildcard",
             "enable": true
         },
