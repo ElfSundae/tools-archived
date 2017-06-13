@@ -30,7 +30,7 @@
             "enable": true
         },
         "//*gravatar.com/avatar": {
-            "dstURL": "//cdn.v2ex.com/gravatar",
+            "dstURL": "//v2ex.assets.uxengine.net/gravatar",
             "kind": "wildcard",
             "enable": true
         }
