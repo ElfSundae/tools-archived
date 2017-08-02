@@ -48,11 +48,11 @@ for arg in "$@"; do
         exe git pull
 
         # Python 2.7+ / Python 3.4+ 兼容脚本
-        #（请选择你的运营商对应文件 ChinaUnicom 联通、ChinaNet 电信、CMCC 移动）
+        #（请选择你的运营商对应文件 ChinaUnicom 联通、 ChinaNet 电信、 CMCC 移动）
         # 确认即开始进行测速，需等待数秒
 
         echo ">> Fetching Apple DNS..."
-        exe python fetch-timeout.py ChinaUnicom.json >> /dev/null 2>&1
+        exe python fetch-timeout.py CMCC.json >> /dev/null 2>&1
 
         # 生成各种形式的配置(如 Surge 执行 python export-configure.py surge)
 
