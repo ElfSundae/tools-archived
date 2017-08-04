@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Build BaiduPCS
+# https://github.com/GangZhuo/BaiduPCS
+
+cd /data/projects/github/BaiduPCS
+
+git reset --hard
+git clean -dfx
+REV=$(git log -1 --format="%h")
+git pull
+REV_NEW=$(git log -1 --format="%h")
+
+if [[ $REV == $REV_NEW ]]; then
+    exit
+fi
+
+export LDFLAGS=-L/usr/local/opt/openssl/lib
+export CPPFLAGS=-I/usr/local/opt/openssl/include
+./configure --with-openssl=/usr/local/opt/openssl
+make clean
+make
+make install
+
+baidupcs
