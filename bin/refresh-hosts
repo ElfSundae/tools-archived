@@ -52,7 +52,7 @@ for arg in "$@"; do
         # 确认即开始进行测速，需等待数秒
 
         echo ">> Fetching Apple DNS..."
-        exe python fetch-timeout.py CMCC.json >> /dev/null 2>&1
+        exe python fetch-timeout.py ChinaNet.json >> /dev/null 2>&1
 
         # 生成各种形式的配置(如 Surge 执行 python export-configure.py surge)
 
