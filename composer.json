@@ -1,0 +1,5 @@
+{
+    "require": {
+        "elfsundae/console": "^1.0"
+    }
+}
