@@ -52,7 +52,7 @@ DESC;
             if (is_string($domains)) {
                 $content .= $domains;
             } else {
-                $content .= $ip."\t".implode(' ', $domains);
+                $content .= sprintf('%-17s%s', $ip, implode(' ', $domains));
             }
             $content .= PHP_EOL;
         }
