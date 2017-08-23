@@ -1,0 +1,101 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/../vendor/autoload.php';
+
+class OptimizeHosts extends Illuminate\Console\Command
+{
+    protected $signature = 'optimize-hosts
+        {file : hosts file path}
+        {--no-comments : Remove comments lines}
+        {--o|overwrite : Overwrite the original file}';
+
+    protected $description = <<<DESC
+Optimize hosts file for the purpose of iOS limitation.
+Put same IP to one line, remove blank and comment lines.
+DESC;
+
+    public function handle()
+    {
+        if (! file_exists($file = $this->argument('file'))) {
+            return $this->error("File '$file' does not exist.");
+        }
+
+        $hosts = [];
+
+        if ($fp = fopen($file, 'r')) {
+            while (! feof($fp)) {
+                $line = $this->processHostsLine(fgets($fp));
+
+                if (! $line) {
+                    continue;
+                }
+
+                if (is_string($line)) {
+                    $hosts[] = $line;
+                } elseif (is_array($line)) {
+                    $ip = array_keys($line)[0];
+                    if (! isset($hosts[$ip])) {
+                        $hosts[$ip] = $line[$ip];
+                    } else {
+                        $hosts[$ip] = array_merge($hosts[$ip], $line[$ip]);
+                    }
+                }
+            }
+            fclose($fp);
+        } else {
+            return $this->error("File '$file' can not be read.");
+        }
+
+        $content = '';
+        foreach ($hosts as $ip => $domains) {
+            if (is_string($domains)) {
+                $content .= $domains;
+            } else {
+                $content .= $ip."\t".implode(' ', $domains);
+            }
+            $content .= PHP_EOL;
+        }
+
+        $this->comment($content);
+
+        if ($this->option('overwrite')) {
+            file_put_contents($file, $content);
+        }
+    }
+
+    /**
+     * Porcess a line content of hosts.
+     *
+     * @param  string  $line
+     * @return array|string|false
+     */
+    protected function processHostsLine($line)
+    {
+        $line = trim($line);
+
+        if (($pos = strpos($line, '#')) !== false) {
+            if ($pos === 0) {
+                if ($this->option('no-comments')) {
+                    return false;
+                } else {
+                    return $line;
+                }
+            } elseif ($pos > 0) {
+                $line = substr($line, 0, $pos);
+            }
+        }
+
+        $splited = preg_split('#\s+#', $line);
+        if (count($splited) < 2) {
+            return false;
+        }
+
+        return [$splited[0] => array_slice($splited, 1)];
+    }
+}
+
+(new ElfSundae\Console\Application('Optimize Hosts', '1.0.0'))
+    ->add(new OptimizeHosts)
+    ->getApplication()
+    ->runAsSingle();
