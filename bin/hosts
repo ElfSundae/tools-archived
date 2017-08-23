@@ -7,7 +7,7 @@ class Hosts extends Illuminate\Console\Command
 {
     protected $signature = 'hosts
         {source* : Support: google, apple}
-        {--o|operator=ChinaNet : Support: ChinaNet, ChinaUnicom, CMCC}';
+        {--operator=ChinaNet : Support: ChinaNet, ChinaUnicom, CMCC}';
 
     protected $description = 'Get the latest hosts';
 
