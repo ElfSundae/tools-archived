@@ -23,7 +23,7 @@ class Hosts extends Illuminate\Console\Command
             }
         }
 
-        $this->info($hosts);
+        $this->comment($hosts);
     }
 
     protected function getGoogleHosts()
