@@ -11,8 +11,10 @@ REV=$(git log -1 --format="%h")
 git pull
 REV_NEW=$(git log -1 --format="%h")
 
-if [[ $REV == $REV_NEW ]]; then
-    exit
+if [ "$1" != "-f" ] && [ "$1" != "--force" ]; then
+    if [[ $REV == $REV_NEW ]]; then
+        exit
+    fi
 fi
 
 export LDFLAGS=-L/usr/local/opt/openssl/lib
