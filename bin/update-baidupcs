@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Build BaiduPCS
+# Build BaiduPCS for macOS
 # https://github.com/GangZhuo/BaiduPCS
 
 cd /data/projects/github/BaiduPCS
@@ -17,8 +17,8 @@ fi
 
 export LDFLAGS=-L/usr/local/opt/openssl/lib
 export CPPFLAGS=-I/usr/local/opt/openssl/include
-./configure --with-openssl=/usr/local/opt/openssl
-make clean
+autoreconf
+./configure
 make
 make install
 
