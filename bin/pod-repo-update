@@ -1,0 +1,21 @@
+#!/bin/sh
+
+REPO="git://cocoapodscn.com/Specs.git"
+MASTER_PATH="$HOME/.cocoapods/repos/master"
+
+if ! [[ -d "$MASTER_PATH" ]]; then
+    git clone "$REPO" "$MASTER_PATH"
+fi
+
+cd "$MASTER_PATH"
+git remote set-url origin "$REPO"
+
+pod repo list
+
+pod repo update --verbose
+
+echo "\n================================"
+echo "Remember to set master repo source on the top of Podfile in your project:\n"
+echo "# source 'any/other/sources'"
+echo "source 'git://cocoapodscn.com/Specs.git'"
+echo "\n================================"
