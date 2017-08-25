@@ -15,7 +15,7 @@ pod repo list
 pod repo update --verbose
 
 echo "\n================================"
-echo "Remember to set master repo source on the top of Podfile in your project:\n"
+echo "Remember to set master repo source on the top of Podfile for your project:\n"
 echo "# source 'any/other/sources'"
 echo "source 'git://cocoapodscn.com/Specs.git'"
 echo "\n================================"
