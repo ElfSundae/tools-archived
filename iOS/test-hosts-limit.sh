@@ -65,7 +65,7 @@ check_reachability_and_exit()
 ## parameters: <safeLineNumber> <maxTestLines>
 test_line_limit()
 {
-    if [[ $# > 0 ]]; then safeNumber=$1; else safeNumber=4000; fi
+    if [[ $# > 0 ]]; then safeNumber=$1; else safeNumber=3990; fi
     if [[ $# > 1 ]]; then maxTest=$2; else maxTest=10000; fi
 
     ip="200.0.0.0"
@@ -85,4 +85,4 @@ test_line_limit()
 }
 
 restore_default_hosts
-test_line_limit 4000 10000
+test_line_limit 3990 10000
