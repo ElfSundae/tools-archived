@@ -107,7 +107,7 @@ test_line_limit()
                 echo "Connection failure: $status"
                 echo "Lines  Count(bytes)  File"
                 wc -lc "$HOSTS_FILE"
-                exit
+                break
             fi
         fi
 
@@ -116,5 +116,71 @@ test_line_limit()
     done
 }
 
-restore_default_hosts
-test_line_limit 4000 10000
+usage()
+{
+    script=$(basename $0)
+    usage=$(cat <<EOT
+$script - Test limitation of iOS hosts file
+
+Usage: $script <testcase|command> <options>
+
+Commands:
+    restore         Restore the default hosts file
+    respring        Respring iOS
+
+Testcase and Options:
+    line
+    --safe-lines        Specify a safe line number that should not check network reachability, default is 4000
+    --max-test-lines    default is 10000
+
+    -h|--help           show this help
+EOT
+)
+    echo "$usage"
+}
+
+if [[ $# > 0 ]]; then
+    TESTCASE=$1
+    shift
+else
+    usage; exit 0
+fi
+
+SAFE_LINES=4000
+MAX_TEST_LINES=10000
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            usage; exit 0
+            ;;
+        --safe-lines*)
+            SAFE_LINES=`echo $1 | sed -e 's/^[^=]*=//g'`
+            shift
+            ;;
+        --max-test-lines*)
+            MAX_TEST_LINES=`echo $1 | sed -e 's/^[^=]*=//g'`
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+
+case "$TESTCASE" in
+    restore)
+        restore_default_hosts
+        ;;
+    respring)
+        killall -HUP SpringBoard
+        ;;
+    line)
+        restore_default_hosts
+        test_line_limit $SAFE_LINES $MAX_TEST_LINES
+        ;;
+    *)
+        usage
+        ;;
+esac
