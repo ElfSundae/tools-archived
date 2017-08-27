@@ -1,10 +1,41 @@
 #!/bin/sh
-
-# Test limitation of iOS hosts file.
-# Run this script by the root user on an iOS Device.
 #
-# Result:
-# About 4000 lines limit.
+# Test limitation of iOS hosts file.
+# Run this script AS ROOT on an iOS Device, and a respring
+# ($ killall -HUP SpringBoard) is always needed before running every test.
+#
+#
+#【测试结论】
+# hosts 不可用不是 iOS 的限制，而是因为在 DNS 查询时不合适的 hosts 文件会导致
+# mDNSResponder 进程挂掉。此时网络连接是正常的，某些 app 或聊天系统可以正常使用，因为
+# 他们自己实现的 DNS 查询，例如微信、QQ 。
+#
+#       Hardware Model:      iPhone7,1
+#       Process:             mDNSResponder [98799]
+#       Path:                /usr/sbin/mDNSResponder
+#       Identifier:          mDNSResponder
+#       Code Type:           ARM-64 (Native)
+#       Parent Process:      launchd [1]
+#
+#       OS Version:          iOS 9.3.3 (13G34)
+#
+#       Exception Type:  EXC_RESOURCE
+#       Exception Subtype: CPU
+#       Exception Message: (Limit 50%) Observed 52% over 180 secs
+#       Exception Note:  NON-FATAL CONDITION (this is NOT a crash)
+#
+# 从 crash 报告看，应该是在解析 hosts 文件时消耗过多 CPU 导致被挂掉。
+#
+#【一些命令】
+#   killall -HUP SpringBoard
+#   ps -A | grep mDNSResponder
+#   killall -HUP mDNSResponderHelper
+#   killall -HUP mDNSResponder
+#   launchctl load -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
+#
+#【测试数据】
+#
+# 4077 80188 /etc/hosts
 
 HOSTS_FILE="/etc/hosts"
 
@@ -51,21 +82,10 @@ check_reachability()
     echo $?
 }
 
-check_reachability_and_exit()
-{
-    status=$(check_reachability)
-    if [[ $status != 0 ]] ; then
-         echo "Connection failure: $status"
-         echo "Lines  Count(bytes)  File"
-         wc -lc "$HOSTS_FILE"
-         exit
-    fi
-}
-
 ## parameters: <safeLineNumber> <maxTestLines>
 test_line_limit()
 {
-    if [[ $# > 0 ]]; then safeNumber=$1; else safeNumber=3990; fi
+    if [[ $# > 0 ]]; then safeNumber=$1; else safeNumber=4000; fi
     if [[ $# > 1 ]]; then maxTest=$2; else maxTest=10000; fi
 
     ip="200.0.0.0"
@@ -76,7 +96,14 @@ test_line_limit()
         echo "$ip $i.cn" | tee -a "$HOSTS_FILE"
 
         if [[ $i -gt $safeNumber ]]; then
-            check_reachability_and_exit
+            status=$(check_reachability)
+            if [[ $status != 0 ]] ; then
+                sed -i '$ d' "$HOSTS_FILE"  # Remove the last line
+                echo "Connection failure: $status"
+                echo "Lines  Count(bytes)  File"
+                wc -lc "$HOSTS_FILE"
+                exit
+            fi
         fi
 
         ((num+=1))
@@ -85,4 +112,4 @@ test_line_limit()
 }
 
 restore_default_hosts
-test_line_limit 3990 10000
+test_line_limit 4000 10000
