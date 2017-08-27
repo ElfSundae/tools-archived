@@ -1,8 +1,8 @@
 #!/bin/sh
 #
 # Test limitation of iOS hosts file.
-# Run this script AS ROOT on an iOS Device, and a respring
-# ($ killall -HUP SpringBoard) is always needed before running every test.
+#
+# Usage: $ test-hosts-limit.sh -h
 #
 #
 #【测试结论】
@@ -43,7 +43,6 @@ HOSTS_FILE="/etc/hosts"
 
 flush_dns_cache()
 {
-    killall -HUP mDNSResponderHelper &>/dev/null
     killall -HUP mDNSResponder &>/dev/null
 }
 
@@ -117,7 +116,6 @@ test_line_limit()
         fi
 
         if [[ $i -gt $safeNumber ]]; then
-            flush_dns_cache
             sleep 0.2
 
             status=$(check_reachability)
@@ -142,8 +140,9 @@ usage()
 
 Test limitation of iOS hosts file.
 
-Note: Run this script AS ROOT on an iOS Device, and a respring is always needed
-before running every test.
+Note: Run this script AS ROOT on an iOS Device.
+    Before running every test, you should respring SpringBoard and
+    toggle Airplane Mode.
 
 Usage: $script <testcase|command> <options>
 
