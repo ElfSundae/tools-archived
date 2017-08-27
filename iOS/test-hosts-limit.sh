@@ -37,7 +37,8 @@
 #【测试数据】
 #
 # 4077 80188 /etc/hosts
-# 4004 78655 /etc/hosts
+# 4145 81559 /etc/hosts
+# 4123 81119 /etc/hosts
 
 HOSTS_FILE="/etc/hosts"
 
@@ -141,8 +142,8 @@ usage()
 Test limitation of iOS hosts file.
 
 Note: Run this script AS ROOT on an iOS Device.
-    Before running every test, you should respring SpringBoard and
-    toggle Airplane Mode.
+    Before running every test, you should restore hosts file, respring
+    SpringBoard and toggle Airplane Mode to make network reachable.
 
 Usage: $script <testcase|command> <options>
 
@@ -153,8 +154,11 @@ Commands:
 
 Testcase and Options:
     line
-    --safe-lines        Specify a safe line number that should not check network reachability, default is 4000
-    --max-test-lines    default is 10000
+    --safe-lines        Specify a safe line number that should not check
+                        network reachability, default is 4000
+    --max-test-lines    Default is 10000
+    -a|--append         Append contents to the current hosts file instead of
+                        creating a new one
 
     -h|--help           show this help
 EOT
@@ -171,6 +175,7 @@ fi
 
 SAFE_LINES=4000
 MAX_TEST_LINES=10000
+APPEND=0
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -183,6 +188,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --max-test-lines*)
             MAX_TEST_LINES=`echo $1 | sed -e 's/^[^=]*=//g'`
+            shift
+            ;;
+        -a|--append)
+            APPEND=1
             shift
             ;;
         *)
@@ -203,7 +212,9 @@ case "$TESTCASE" in
         killall -HUP SpringBoard
         ;;
     line)
-        restore_default_hosts
+        if [[ $APPEND == 0 ]]; then
+            restore_default_hosts
+        fi
         test_line_limit $SAFE_LINES $MAX_TEST_LINES
         ;;
     *)
