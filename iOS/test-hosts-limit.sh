@@ -43,8 +43,14 @@ HOSTS_FILE="/etc/hosts"
 
 flush_dns_cache()
 {
-    killall -HUP mDNSResponderHelper
-    killall -HUP mDNSResponder
+    killall -HUP mDNSResponderHelper &>/dev/null
+    killall -HUP mDNSResponder &>/dev/null
+}
+
+reload_mDNSResponder()
+{
+    launchctl unload /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist &>/dev/null
+    launchctl load -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist &>/dev/null
 }
 
 restore_default_hosts()
@@ -57,10 +63,8 @@ EOT
     chown root:wheel "$HOSTS_FILE"
     chmod 644 "$HOSTS_FILE"
 
-    launchctl unload /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist &>/dev/null
-    launchctl load -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist &>/dev/null
-
     flush_dns_cache
+    sleep 1
 }
 
 # From https://gist.github.com/jjarmoc/1299906
@@ -113,7 +117,7 @@ test_line_limit()
         fi
 
         if [[ $i -gt $safeNumber ]]; then
-            flush_dns_cache &>/dev/null
+            flush_dns_cache
             sleep 0.2
 
             status=$(check_reachability)
@@ -135,7 +139,11 @@ usage()
 {
     script=$(basename $0)
     usage=$(cat <<EOT
-$script - Test limitation of iOS hosts file
+
+Test limitation of iOS hosts file.
+
+Note: Run this script AS ROOT on an iOS Device, and a respring is always needed
+before running every test.
 
 Usage: $script <testcase|command> <options>
 
