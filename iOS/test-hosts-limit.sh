@@ -32,10 +32,12 @@
 #   killall -HUP mDNSResponderHelper
 #   killall -HUP mDNSResponder
 #   launchctl load -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
+#   launchctl unload /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
 #
 #【测试数据】
 #
 # 4077 80188 /etc/hosts
+# 4004 78655 /etc/hosts
 
 HOSTS_FILE="/etc/hosts"
 
@@ -48,6 +50,9 @@ EOT
 
     chown root:wheel "$HOSTS_FILE"
     chmod 644 "$HOSTS_FILE"
+
+    launchctl unload /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist &>/dev/null
+    launchctl load -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist &>/dev/null
 }
 
 # From https://gist.github.com/jjarmoc/1299906
