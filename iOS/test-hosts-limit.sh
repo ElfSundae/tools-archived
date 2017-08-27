@@ -43,8 +43,8 @@ HOSTS_FILE="/etc/hosts"
 
 flush_dns_cache()
 {
-    killall -HUP mDNSResponderHelper &>/dev/null
-    killall -HUP mDNSResponder &>/dev/null
+    killall -HUP mDNSResponderHelper
+    killall -HUP mDNSResponder
 }
 
 restore_default_hosts()
@@ -113,7 +113,7 @@ test_line_limit()
         fi
 
         if [[ $i -gt $safeNumber ]]; then
-            flush_dns_cache
+            flush_dns_cache &>/dev/null
             sleep 0.2
 
             status=$(check_reachability)
@@ -140,6 +140,7 @@ $script - Test limitation of iOS hosts file
 Usage: $script <testcase|command> <options>
 
 Commands:
+    flush           Flush DNS cache
     restore         Restore the default hosts file
     respring        Respring iOS
 
@@ -185,6 +186,9 @@ done
 
 
 case "$TESTCASE" in
+    flush)
+        flush_dns_cache
+        ;;
     restore)
         restore_default_hosts
         ;;
