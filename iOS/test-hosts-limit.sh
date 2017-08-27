@@ -41,6 +41,12 @@
 
 HOSTS_FILE="/etc/hosts"
 
+flush_dns_cache()
+{
+    killall -HUP mDNSResponderHelper &>/dev/null
+    killall -HUP mDNSResponder &>/dev/null
+}
+
 restore_default_hosts()
 {
     cat <<'EOT' > "$HOSTS_FILE"
@@ -53,6 +59,8 @@ EOT
 
     launchctl unload /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist &>/dev/null
     launchctl load -w /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist &>/dev/null
+
+    flush_dns_cache
 }
 
 # From https://gist.github.com/jjarmoc/1299906
@@ -105,6 +113,9 @@ test_line_limit()
         fi
 
         if [[ $i -gt $safeNumber ]]; then
+            flush_dns_cache
+            sleep 0.2
+
             status=$(check_reachability)
             if [[ $status != 0 ]] ; then
                 sed -i '$ d' "$HOSTS_FILE"  # Remove the last line
