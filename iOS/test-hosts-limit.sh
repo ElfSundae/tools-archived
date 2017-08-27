@@ -98,7 +98,11 @@ test_line_limit()
     lineStart=$(cat "$HOSTS_FILE" | wc -l)
     ((lineStart++))
     for (( i = $lineStart; i <= $maxTest; i++ )); do
-        echo "$ip $i.cn" | tee -a "$HOSTS_FILE"
+        if [[ $i -lt $safeNumber ]]; then
+            echo "$ip $i.cn" >> "$HOSTS_FILE"
+        else
+            echo "$ip $i.cn" | tee -a "$HOSTS_FILE"
+        fi
 
         if [[ $i -gt $safeNumber ]]; then
             status=$(check_reachability)
