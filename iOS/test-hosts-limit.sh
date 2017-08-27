@@ -1,8 +1,7 @@
 #!/bin/sh
 #
 # Test limitation of iOS hosts file.
-# Run this script AS ROOT on an iOS Device, and a respring
-# ($ killall -HUP SpringBoard) is always needed before running every test.
+# Run this script AS ROOT on an iOS Device.
 #
 #
 #【测试结论】
@@ -38,6 +37,8 @@
 #
 # 4077 80188 /etc/hosts
 # 4004 78655 /etc/hosts
+# 4009 78760 /etc/hosts
+# 4002 78613 /etc/hosts
 
 HOSTS_FILE="/etc/hosts"
 
@@ -98,7 +99,11 @@ test_line_limit()
     lineStart=$(cat "$HOSTS_FILE" | wc -l)
     ((lineStart++))
     for (( i = $lineStart; i <= $maxTest; i++ )); do
-        echo "$ip $i.cn" | tee -a "$HOSTS_FILE"
+        if [[ $i -lt $safeNumber ]]; then
+            echo "$ip $i.cn" >> "$HOSTS_FILE"
+        else
+            echo "$ip $i.cn" | tee -a "$HOSTS_FILE"
+        fi
 
         if [[ $i -gt $safeNumber ]]; then
             status=$(check_reachability)
