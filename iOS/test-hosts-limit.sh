@@ -25,6 +25,10 @@
 #       Exception Note:  NON-FATAL CONDITION (this is NOT a crash)
 #
 # 从 crash 报告看，应该是在解析 hosts 文件时消耗过多 CPU 导致被挂掉。
+# 从系统日志看，也可能是 mDNSResponder 的 bug 导致的：错误
+# `Property list invalid for format: 200 (property lists cannot contain NULL)`
+#
+# `mDNSResponderHelper` 是 `mDNSResponder` 的守护进程。
 #
 #【一些命令】
 #   killall -HUP SpringBoard
@@ -36,9 +40,11 @@
 #
 #【测试数据】
 #
+# | Lines | Size(bytes) |
 # 4077 80188 /etc/hosts
 # 4145 81559 /etc/hosts
 # 4123 81119 /etc/hosts
+# 4402 86845 /etc/hosts
 
 HOSTS_FILE="/etc/hosts"
 
@@ -123,7 +129,7 @@ test_line_limit()
             if [[ $status != 0 ]] ; then
                 sed -i '$ d' "$HOSTS_FILE"  # Remove the last line
                 echo "Connection failure: $status"
-                echo "Lines  Count(bytes)  File"
+                echo "Lines  Size(bytes)  File"
                 wc -lc "$HOSTS_FILE"
                 break
             fi
