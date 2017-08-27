@@ -45,6 +45,7 @@
 # 4145 81559 /etc/hosts
 # 4123 81119 /etc/hosts
 # 4402 86845 /etc/hosts
+# 4711 93172 /etc/hosts
 
 HOSTS_FILE="/etc/hosts"
 
@@ -159,12 +160,14 @@ Commands:
     respring        Respring iOS
 
 Testcase and Options:
-    line
+    line                Test max line of hosts file
     --safe-lines        Specify a safe line number that should not check
                         network reachability, default is 4000
     --max-test-lines    Default is 10000
     -a|--append         Append contents to the current hosts file instead of
                         creating a new one
+
+    domain              Test max domains pre line
 
     -h|--help           show this help
 EOT
@@ -222,6 +225,9 @@ case "$TESTCASE" in
             restore_default_hosts
         fi
         test_line_limit $SAFE_LINES $MAX_TEST_LINES
+        ;;
+    domain)
+        echo "TODO..."
         ;;
     *)
         usage
