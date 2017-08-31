@@ -144,8 +144,7 @@ test_line_limit()
 usage()
 {
     script=$(basename $0)
-    usage=$(cat <<EOT
-
+    cat <<EOT
 Test limitation of iOS hosts file.
 
 Note: Run this script AS ROOT on an iOS Device.
@@ -171,15 +170,14 @@ Testcase and Options:
 
     -h|--help           show this help
 EOT
-)
-    echo "$usage"
 }
 
 if [[ $# > 0 ]]; then
     TESTCASE=$1
     shift
 else
-    usage; exit 0
+    usage
+    exit 0
 fi
 
 SAFE_LINES=4000
