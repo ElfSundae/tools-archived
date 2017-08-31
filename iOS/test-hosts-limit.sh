@@ -168,7 +168,7 @@ Testcase and Options:
 
     domain              Test max domains pre line
 
-    -h|--help           show this help
+    -h|--help           Show this help
 EOT
 }
 
