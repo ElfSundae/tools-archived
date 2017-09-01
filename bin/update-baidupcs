@@ -3,16 +3,22 @@
 # Build BaiduPCS for macOS
 # https://github.com/GangZhuo/BaiduPCS
 
+clean()
+{
+    git reset --hard
+    git clean -dfx
+}
+
 cd /data/projects/github/BaiduPCS
 
-git reset --hard
-git clean -dfx
-REV=$(git log -1 --format="%h")
-git pull
-REV_NEW=$(git log -1 --format="%h")
+clean
+
+oldRev=$(git rev-parse HEAD)
+git pull origin master
+newRev=$(git rev-parse HEAD)
 
 if [ "$1" != "-f" ] && [ "$1" != "--force" ]; then
-    if [[ $REV == $REV_NEW ]]; then
+    if [[ $oldRev == $newRev ]]; then
         exit
     fi
 fi
@@ -23,5 +29,7 @@ autoreconf
 ./configure
 make
 make install
+
+clean
 
 baidupcs
