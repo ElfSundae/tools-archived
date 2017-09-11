@@ -9,7 +9,7 @@ class Hosts extends Illuminate\Console\Command
         {source* : Support: google, apple}
         {--o|operator=ChinaNet : Support: ChinaNet, ChinaUnicom, CMCC}';
 
-    protected $description = 'Get the latest hosts';
+    protected $description = 'Fetch the latest hosts';
 
     public function handle()
     {
@@ -28,7 +28,9 @@ class Hosts extends Illuminate\Console\Command
 
     protected function getGoogleHosts()
     {
-        return file_get_contents('https://raw.githubusercontent.com/racaljk/hosts/master/hosts');
+        $url = 'https://raw.githubusercontent.com/googlehosts/hosts/master/hosts-files/hosts';
+
+        return file_get_contents($url) ?: null;
     }
 
     protected function getAppleHosts($operator = 'ChinaNet')
@@ -36,24 +38,33 @@ class Hosts extends Illuminate\Console\Command
         $cwd = getcwd();
 
         $dir = sys_get_temp_dir().'/'.uniqid('AppleDNS-', true);
-        $repo = 'https://github.com/gongjianhui/AppleDNS.git';
+        $repo = 'git://github.com/gongjianhui/AppleDNS.git';
 
-        exec("git clone $repo --single-branch --depth=1 -q \"$dir\"");
-        chdir($dir);
-
-        $file = $operator.'.json';
-        if (! file_exists($file)) {
-            $this->error($file.' does not exist');
-
-            chdir($cwd);
-            return '';
+        exec("git clone $repo --single-branch --depth=1 '$dir' &>/dev/null");
+        if (! file_exists($dir)) {
+            $this->error("Cloning $repo failed.");
+            exit(1);
         }
 
-        exec("python fetch-timeout.py $file");
+        chdir($dir);
 
-        $hosts = shell_exec('python export-configure.py hosts');
+        $operatorFile = $operator.'.json';
+        if (! file_exists($operatorFile)) {
+            $this->error($operatorFile.' does not exist');
+            exit(1);
+        }
+
+        exec("python fetch-timeout.py '$operatorFile' &>/dev/null", $output, $result);
+
+        if ($result === 0) {
+            $hosts = shell_exec('python export-configure.py hosts');
+        } else {
+            $hosts = null;
+        }
 
         chdir($cwd);
+        @unlink($dir);
+
         return $hosts;
     }
 }
