@@ -1,6 +1,6 @@
 #!/bin/sh
 
-REPO="git://cocoapodscn.com/Specs.git"
+REPO="https://bitbucket.org/elfsundae/specs.git"
 MASTER_PATH="$HOME/.cocoapods/repos/master"
 
 if ! [[ -d "$MASTER_PATH" ]]; then
@@ -12,10 +12,16 @@ git remote set-url origin "$REPO"
 
 pod repo list
 
-pod repo update --verbose
+pod repo update
 
-echo "\n================================"
-echo "Remember to set master repo source on the top of Podfile for your project:\n"
-echo "# source 'any/other/sources'"
-echo "source 'git://cocoapodscn.com/Specs.git'"
-echo "\n================================"
+cat <<EOT
+
+================================
+Remember to set master repo source in the Podfile of your project:
+
+# source 'any/other/sources'
+source '${REPO}'
+...
+
+================================
+EOT
