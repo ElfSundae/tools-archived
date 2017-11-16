@@ -24,7 +24,7 @@ for version in 5.1 5.2 5.3 5.4 5.5; do
     fi
 done
 
-sync-laravel.com "$ROOT" \
+build-laravel.com "$ROOT" \
     --root-url="https://laravel.com" \
     china-cdn \
     local-cdn \
