@@ -9,6 +9,16 @@
             "kind": "wildcard",
             "enable": true
         },
+        "fonts.googleapis.com": {
+            "dstURL": "fonts.cat.net",
+            "kind": "wildcard",
+            "enable": true
+        },
+        "fonts.gstatic.com": {
+            "dstURL": "gstatic.cat.net",
+            "kind": "wildcard",
+            "enable": true
+        },
         "themes.googleusercontent.com": {
             "dstURL": "themes.cat.net",
             "kind": "wildcard",
