@@ -4,7 +4,8 @@ brew upgrade
 
 composer global update
 
-pod repo update
+# pod repo update
+pod-repo-update
 
 npm install -g npm-check
 npm-check -gu
