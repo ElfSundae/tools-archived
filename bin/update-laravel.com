@@ -1,10 +1,5 @@
 #!/bin/sh
 
-. $HOME/.bash_profile
-
-echo "======================="
-date
-
 ROOT="/data/www/laravel.com"
 
 if ! [[ -d "$ROOT" ]]; then
@@ -30,6 +25,5 @@ build-laravel.com "$ROOT" \
     local-cdn \
     remove-ga \
     remove-ads \
-    cache
-
-date
+    cache \
+    "$@"
