@@ -1,9 +1,24 @@
 #!/bin/sh
 
-ROOT="/data/www/laravel.com"
+ROOT="/data/www"
+DOMAIN="laravel.com"
+REPO="git://github.com/ElfSundae/laravel.com.git"
+BRANCH="mirror-site"
+
+config()
+{
+    echo "china-cdn remove-ads cache local-cdn remove-ga"
+}
+
+if [[ -n $1 ]]; then
+    DOMAIN=$1
+    shift
+fi
+
+ROOT="$ROOT/$DOMAIN"
 
 if ! [[ -d "$ROOT" ]]; then
-    git clone git://github.com/ElfSundae/laravel.com.git -b mirror-site "$ROOT"
+    git clone $REPO -b $BRANCH "$ROOT"
 fi
 
 cd "$ROOT"
@@ -19,11 +34,4 @@ for version in 5.1 5.2 5.3 5.4 5.5; do
     fi
 done
 
-build-laravel.com "$ROOT" \
-    --root-url="https://laravel.com" \
-    china-cdn \
-    local-cdn \
-    remove-ga \
-    remove-ads \
-    cache \
-    "$@"
+build-laravel.com "$ROOT" --root-url="https://$DOMAIN" $(config) "$@"
