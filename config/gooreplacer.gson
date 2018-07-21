@@ -1,28 +1,35 @@
 {
-    "createBy": "http://liujiacai.net/gooreplacer/",
-    "version": "3.6",
-    "rules_url": "https://raw.githubusercontent.com/ElfSundae/tools/master/config/gooreplacer.gson",
-    "updated_at": "2017-11-08 01:45:51",
-    "rules": {
-        "ajax.googleapis.com": {
-            "dstURL": "ajax.cat.net",
-            "kind": "wildcard",
-            "enable": true
-        },
-        "themes.googleusercontent.com": {
-            "dstURL": "themes.cat.net",
-            "kind": "wildcard",
-            "enable": true
-        },
-        "cdnjs.cloudflare.com": {
-            "dstURL": "cdnjs.cat.net",
-            "kind": "wildcard",
-            "enable": true
-        },
-        "//*gravatar.com/avatar": {
-            "dstURL": "//gravatar.cat.net/avatar",
-            "kind": "wildcard",
-            "enable": true
-        }
+  "createBy": "http://liujiacai.net/gooreplacer/",
+  "version": "3.9",
+  "rulesUrl": "https://raw.githubusercontent.com/ElfSundae/tools/master/config/gooreplacer.gson",
+  "createAt": "Sat Jul 21 2018 12:56:08 GMT+0800 (中国标准时间)",
+  "redirect-rules": [
+    {
+      "src": "ajax.googleapis.com",
+      "kind": "wildcard",
+      "dst": "ajax.cat.net",
+      "enable": true
+    },
+    {
+      "src": "themes.googleusercontent.com",
+      "kind": "wildcard",
+      "dst": "themes.cat.net",
+      "enable": true
+    },
+    {
+      "src": "cdnjs.cloudflare.com",
+      "kind": "wildcard",
+      "dst": "cdnjs.cat.net",
+      "enable": true
+    },
+    {
+      "src": "//*gravatar.com/avatar",
+      "kind": "wildcard",
+      "dst": "//gravatar.cat.net/avatar",
+      "enable": true
     }
+  ],
+  "cancel-rules": [],
+  "request-headers": [],
+  "response-headers": []
 }
