@@ -7,5 +7,8 @@ composer global update
 # pod repo update
 pod-repo-update
 
+npm install -g nrm
+nrm use taobao
+
 npm install -g npm-check
 npm-check -gu
