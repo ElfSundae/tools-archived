@@ -1,7 +1,6 @@
 #!/bin/sh
 
-# REPO="https://bitbucket.org/elfsundae/specs.git"
-REPO="https://git.coding.net/ElfSundae/Specs.git"
+REPO="https://git.dev.tencent.com/ElfSundae/Specs.git"
 MASTER_PATH="$HOME/.cocoapods/repos/master"
 
 if ! [[ -d "$MASTER_PATH" ]]; then
