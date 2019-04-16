@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>AMApplicationBuild</key>
-	<string>409.2</string>
+	<string>444.42</string>
 	<key>AMApplicationVersion</key>
-	<string>2.5</string>
+	<string>2.9</string>
 	<key>AMDocumentVersion</key>
 	<string>2</string>
 	<key>actions</key>
@@ -28,7 +28,7 @@
 				<string>1.0.2</string>
 				<key>AMApplication</key>
 				<array>
-					<string>Automator</string>
+					<string>自动操作</string>
 				</array>
 				<key>AMParameterProperties</key>
 				<dict>
@@ -47,11 +47,11 @@
 				<key>ActionBundlePath</key>
 				<string>/System/Library/Automator/Run AppleScript.action</string>
 				<key>ActionName</key>
-				<string>Run AppleScript</string>
+				<string>运行 AppleScript</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>tell application "iTunes"	-- ignoring application responses		if player state is playing then		set del_track to current track		set track_title to name of del_track		set track_artist to artist of del_track		set track_location to location of del_track		set track_databaseID to (get database ID of del_track)				# move to Trash so that we can restore if we regret		tell application "Finder" to move track_location to trash		# delete from Library and all playlist		delete (some track of library playlist 1 whose database ID is track_databaseID)				# notify result		display notification "Deleted" with title track_title &amp; "  (" &amp; track_artist &amp; ")" sound name "default"		# delay for showing notification		delay 2		# continue to play track		play	else		display notification with title "There is no current playing track" sound name "default"	end if	-- end ignoringend tell</string>
+					<string>tell application "iTunes"	-- ignoring application responses		if player state is playing then		set del_track to current track		set track_title to name of del_track		set track_artist to artist of del_track		set track_location to location of del_track		set track_databaseID to (get database ID of del_track)				# move to Trash so that we can restore if we regret		tell application "Finder" to move track_location to trash		# delete from Library and all playlist		delete (some track of library playlist 1 whose database ID is track_databaseID)				# notify result		display notification "Deleted" with title track_title &amp; "  (" &amp; track_artist &amp; ")" sound name "default"		# delay for showing notification		delay 1		# continue to play track		play	else		display notification with title "There is no current playing track" sound name "default"	end if	-- end ignoringend tell</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -71,7 +71,7 @@
 				<string>988C5B88-9D58-4DD8-A3D0-F01573EB04E8</string>
 				<key>Keywords</key>
 				<array>
-					<string>Run</string>
+					<string>运行</string>
 				</array>
 				<key>OutputUUID</key>
 				<string>FE09BD30-F52E-42E3-BE65-E64CD00EACA2</string>
@@ -105,7 +105,7 @@ end run</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>449.000000:444.000000</string>
+				<string>441.500000:550.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -117,15 +117,29 @@ end run</string>
 	<dict/>
 	<key>workflowMetaData</key>
 	<dict>
-		<key>serviceApplicationBundleID</key>
-		<string></string>
-		<key>serviceApplicationPath</key>
-		<string></string>
+		<key>applicationBundleIDsByPath</key>
+		<dict/>
+		<key>applicationPaths</key>
+		<array/>
+		<key>backgroundColorName</key>
+		<string>blackColor</string>
+		<key>inputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>outputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>presentationMode</key>
+		<integer>11</integer>
+		<key>processesInput</key>
+		<integer>0</integer>
 		<key>serviceInputTypeIdentifier</key>
 		<string>com.apple.Automator.nothing</string>
 		<key>serviceOutputTypeIdentifier</key>
 		<string>com.apple.Automator.nothing</string>
 		<key>serviceProcessesInput</key>
+		<integer>0</integer>
+		<key>systemImageName</key>
+		<string>NSActionTemplate</string>
+		<key>useAutomaticInputType</key>
 		<integer>0</integer>
 		<key>workflowTypeIdentifier</key>
 		<string>com.apple.Automator.servicesMenu</string>
