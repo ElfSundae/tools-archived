@@ -83,7 +83,7 @@
 	<key>DVTScrollbarMarkerWarningColor</key>
 	<string>0.937255 0.717647 0.34902 1</string>
 	<key>DVTSourceTextBackground</key>
-	<string>0.0730357 0.0715364 0.0718982 1</string>
+	<string>0.0895112 0.0895085 0.0895101 1</string>
 	<key>DVTSourceTextBlockDimBackgroundColor</key>
 	<string>0.5 0.5 0.5 1</string>
 	<key>DVTSourceTextCurrentLineHighlightColor</key>
@@ -91,9 +91,9 @@
 	<key>DVTSourceTextInsertionPointColor</key>
 	<string>1 1 1 1</string>
 	<key>DVTSourceTextInvisiblesColor</key>
-	<string>0.198222 0.198222 0.198222 1</string>
+	<string>0.2 0.2 0.2 1</string>
 	<key>DVTSourceTextSelectionColor</key>
-	<string>0.0588235 0.223529 0.462745 1</string>
+	<string>0.0784314 0.176471 0.352941 1</string>
 	<key>DVTSourceTextSyntaxColors</key>
 	<dict>
 		<key>xcode.syntax.attribute</key>
