@@ -1,0 +1,14 @@
+#!/bin/sh
+
+BASEDIR=$(dirname "$0")
+uncrustify="$BASEDIR/uncrustify"
+uncrustifyConfig="$BASEDIR/../config/uncrustify_0.69_objc.cfg"
+
+SRCDIR="."
+if [[ $# > 0 ]]; then
+    SRCDIR="$@"
+fi
+
+find "$SRCDIR" -path "*/Pods/*" -prune -o \
+    -type f \( -name "*.[hm]" -o -name "*.mm" \) -print0 | xargs -0 \
+    "$uncrustify" -c "$uncrustifyConfig" -l OC --replace --no-backup
