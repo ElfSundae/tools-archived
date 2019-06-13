@@ -2,6 +2,9 @@
 
 brew upgrade
 
+brew tap buo/cask-upgrade
+brew cu -ay
+
 composer global update
 
 pod repo update
