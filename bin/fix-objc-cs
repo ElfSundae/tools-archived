@@ -9,6 +9,8 @@ if [[ $# > 0 ]]; then
     SRCDIR="$@"
 fi
 
-find "$SRCDIR" -path "*/Pods/*" -prune -o \
-    -type f \( -name "*.[hm]" -o -name "*.mm" \) -print0 | xargs -0 \
+find "$SRCDIR" -type f \
+    -path "*/Pods/*" -prune -o \
+    -path "*/Carthage/*" -prune -o \
+    \( -name "*.[hm]" -o -name "*.mm" \) -print0 | xargs -0 \
     "$uncrustify" -c "$uncrustifyConfig" -l OC --replace --no-backup
