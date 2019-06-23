@@ -3,7 +3,7 @@
 ROOT="/data/www"
 DOMAIN="laravel.com"
 REPO="git://github.com/ElfSundae/laravel.com.git"
-BRANCH="mirror-site"
+BRANCH="master"
 
 config()
 {
