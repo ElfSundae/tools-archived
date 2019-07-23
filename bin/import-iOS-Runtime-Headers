@@ -1,0 +1,45 @@
+#!/bin/sh
+
+MyDir="/data/projects/iOS/iOS-Runtime-Headers"
+UpstreamDir="/data/projects/github/iOS/iOS-Runtime-Headers"
+
+TAGS=(10.0 10.1 10.2 10.3 11.4)
+DIRS=(Frameworks lib PrivateFrameworks protocols)
+
+_task()
+{
+    _tag=$1
+
+    echo "=== checkout $_tag"
+    cd "$UpstreamDir"
+    git checkout $_tag
+
+    for _dir in "${DIRS[@]}"; do
+        echo "=== Copy $_dir"
+        rm -rf "$MyDir/$_dir"
+        cp -R "$UpstreamDir/$_dir" "$MyDir/$_dir"
+    done
+
+    cd "$MyDir"
+    git add .
+    git commit -am "$_tag"
+    git tag "$_tag"
+    git push --all
+    git push --tags
+}
+
+echo "=== Prepare $UpstreamDir"
+cd "$UpstreamDir"
+git reset --hard
+git fetch
+git status
+
+echo "=== Prepare $MyDir"
+cd "$MyDir"
+git reset --hard
+git pull
+git status
+
+for _tag in "${TAGS[@]}"; do
+    _task $_tag
+done
