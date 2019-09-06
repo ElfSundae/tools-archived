@@ -7,7 +7,7 @@ BRANCH="master"
 
 config()
 {
-    echo "china-cdn remove-ads cache local-cdn remove-ga"
+    echo "local-cdn china-cdn remove-ga remove-ads"
 }
 
 if [[ -n $1 ]]; then
