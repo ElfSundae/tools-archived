@@ -30,6 +30,8 @@
 	<string>0.0588235 0.223529 0.462745 1</string>
 	<key>DVTDebuggerInstructionPointerColor</key>
 	<string>0.420701 0.189216 0.346376 1</string>
+	<key>DVTFontAndColorVersion</key>
+	<integer>1</integer>
 	<key>DVTFontSizeModifier</key>
 	<integer>2</integer>
 	<key>DVTLineSpacing</key>
@@ -85,11 +87,11 @@
 	<key>DVTScrollbarMarkerWarningColor</key>
 	<string>0.937255 0.717647 0.34902 1</string>
 	<key>DVTSourceTextBackground</key>
-	<string>0.0609907 0.0671335 0.0807928 1</string>
+	<string>0.0627451 0.0666667 0.0823529 1</string>
 	<key>DVTSourceTextBlockDimBackgroundColor</key>
 	<string>0.5 0.5 0.5 1</string>
 	<key>DVTSourceTextCurrentLineHighlightColor</key>
-	<string>0.135328 0.135324 0.135326 1</string>
+	<string>0.137255 0.137255 0.137255 1</string>
 	<key>DVTSourceTextInsertionPointColor</key>
 	<string>1 1 1 1</string>
 	<key>DVTSourceTextInvisiblesColor</key>
@@ -101,23 +103,27 @@
 		<key>xcode.syntax.attribute</key>
 		<string>1 0.905882 0.984314 1</string>
 		<key>xcode.syntax.character</key>
-		<string>1 0.760784 0.180392 1</string>
+		<string>0.254902 0.8 0.270588 1</string>
 		<key>xcode.syntax.comment</key>
-		<string>0 0.502 0 1</string>
+		<string>0.0588235 0.439216 0.00392157 1</string>
 		<key>xcode.syntax.comment.doc</key>
-		<string>0 0.502 0 1</string>
+		<string>0.0588235 0.439216 0.00392157 1</string>
 		<key>xcode.syntax.comment.doc.keyword</key>
-		<string>0 0.502 0 1</string>
+		<string>0 0.501961 0 1</string>
+		<key>xcode.syntax.declaration.other</key>
+		<string>0.19494 0.663921 0.857876 1</string>
+		<key>xcode.syntax.declaration.type</key>
+		<string>0.364706 0.847059 1 1</string>
 		<key>xcode.syntax.identifier.class</key>
-		<string>0.227451 0.721569 0.886275 1</string>
+		<string>0.19494 0.663921 0.857876 1</string>
 		<key>xcode.syntax.identifier.class.system</key>
 		<string>0.227451 0.721569 0.886275 1</string>
 		<key>xcode.syntax.identifier.constant</key>
-		<string>0.227451 0.721569 0.886275 1</string>
+		<string>0.19494 0.663921 0.857876 1</string>
 		<key>xcode.syntax.identifier.constant.system</key>
 		<string>0.227451 0.721569 0.886275 1</string>
 		<key>xcode.syntax.identifier.function</key>
-		<string>0.227451 0.721569 0.886275 1</string>
+		<string>0.19494 0.663921 0.857876 1</string>
 		<key>xcode.syntax.identifier.function.system</key>
 		<string>0.227451 0.721569 0.886275 1</string>
 		<key>xcode.syntax.identifier.macro</key>
@@ -125,15 +131,19 @@
 		<key>xcode.syntax.identifier.macro.system</key>
 		<string>0.894118 0.486275 0.282353 1</string>
 		<key>xcode.syntax.identifier.type</key>
-		<string>0.227451 0.721569 0.886275 1</string>
+		<string>0.19494 0.663921 0.857876 1</string>
 		<key>xcode.syntax.identifier.type.system</key>
 		<string>0.227451 0.721569 0.886275 1</string>
 		<key>xcode.syntax.identifier.variable</key>
-		<string>0.227451 0.721569 0.886275 1</string>
+		<string>0.19494 0.663921 0.857876 1</string>
 		<key>xcode.syntax.identifier.variable.system</key>
 		<string>0.227451 0.721569 0.886275 1</string>
 		<key>xcode.syntax.keyword</key>
 		<string>1 0.109804 0.156863 1</string>
+		<key>xcode.syntax.mark</key>
+		<string>0 0.501961 0 1</string>
+		<key>xcode.syntax.markup.code</key>
+		<string>0.665 0.052 0.569 1</string>
 		<key>xcode.syntax.number</key>
 		<string>0.254902 0.8 0.270588 1</string>
 		<key>xcode.syntax.plain</key>
@@ -156,6 +166,10 @@
 		<key>xcode.syntax.comment.doc</key>
 		<string>Menlo-Regular - 17.0</string>
 		<key>xcode.syntax.comment.doc.keyword</key>
+		<string>Menlo-Bold - 17.0</string>
+		<key>xcode.syntax.declaration.other</key>
+		<string>Menlo-Regular - 17.0</string>
+		<key>xcode.syntax.declaration.type</key>
 		<string>Menlo-Regular - 17.0</string>
 		<key>xcode.syntax.identifier.class</key>
 		<string>Menlo-Regular - 17.0</string>
@@ -182,6 +196,10 @@
 		<key>xcode.syntax.identifier.variable.system</key>
 		<string>Menlo-Regular - 17.0</string>
 		<key>xcode.syntax.keyword</key>
+		<string>Menlo-Regular - 17.0</string>
+		<key>xcode.syntax.mark</key>
+		<string>Menlo-Bold - 17.0</string>
+		<key>xcode.syntax.markup.code</key>
 		<string>Menlo-Regular - 17.0</string>
 		<key>xcode.syntax.number</key>
 		<string>Menlo-Regular - 17.0</string>
