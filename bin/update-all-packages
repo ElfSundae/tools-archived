@@ -15,5 +15,3 @@ nrm use taobao
 
 npm install -g npm-check
 npm-check -gu
-
-BaiduPCS-Go update -y
