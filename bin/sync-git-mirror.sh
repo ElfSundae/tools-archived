@@ -1,42 +1,95 @@
 #!/bin/bash
-set -euo pipefail
+set -eo pipefail
 
-MIRRORS_ROOT="/data/mirrors"
+MIRROR_NAME=mirror
 
-mkdir -p "$MIRRORS_ROOT"
-
-exit
-
-# _sync git_url [fork_name]
-_sync()
+usage()
 {
-    # doc: https://help.github.com/en/articles/duplicating-a-repository
-    _upstream_url=$1
-    if [[ $_upstream_url != *.git ]]; then
-        _upstream_url="$_upstream_url.git"
-    fi
+    script=$(basename "$0")
+    cat <<EOT
+Sync Git Mirror - Keep your git mirror/fork up to date.
 
-    _fork_name=$2
-    if ! [ $_fork_name ]; then
-        _fork_name=$(basename "$_upstream_url" .git)
-    fi
+Usage: $script [options] source mirror
 
-    echo "=> Syncing $_fork_name from $_upstream_url"
+\`source\` can be a git URL or a local path
+\`mirror\` should be a git URL
 
-    cd "$MIRRORS_ROOT"
+Options:
+        --path=           Path to clone
+        --mirror-name=    Git remote name of mirror, default is "$MIRROR_NAME"
+        -h|--help         Show this usage
 
-    if ! [ -d "$_fork_name" ]; then
-        git clone "$_upstream_url" "$_fork_name" >> /dev/null 2>&1
-    fi
-
-    cd "$_fork_name"
-    git remote set-url --push origin "git@github.com:ElfSundae/$_fork_name.git"
-
-    git fetch -p origin
-    # https://gist.github.com/grimzy/a1d3aae40412634df29cf86bb74a6f72
-    git branch -r | grep -v '\->' | while read remote; do git branch --track "${remote#origin/}" "$remote"; done >> /dev/null 2>&1
-    git pull --prune --all --tags -q
-
-    git push --prune --all
-    git push --tags
+Examples:
+    $script https://github.com/foo/bar.git git@github.com:username/bar.git
+    $script /data/mirrors/bar git@github.com:username/bar.git
+    $script https://github.com/foo/bar.git git@github.com:username/bar.git \\
+        --path=/data/mirrors/bar
+EOT
 }
+
+while [[ $# > 0 ]]; do
+    case $1 in
+        --path=*)
+            REPO_PATH=`echo $1 | sed -e 's/^[^=]*=//g'`
+            REPO_PATH=${REPO_PATH%/}
+            shift
+            ;;
+        --mirror-name=*)
+            MIRROR_NAME=`echo $1 | sed -e 's/^[^=]*=//g'`
+            shift
+            ;;
+        -h|--help)
+            usage; exit
+            shift
+            ;;
+        *)
+            if [[ -z ${SOURCE+x} ]]; then
+                SOURCE=$1
+            elif [[ -z ${MIRROR+x} ]]; then
+                MIRROR=$1
+            else
+                usage
+                exit 1
+            fi
+            shift
+            ;;
+    esac
+done
+
+if [[ -z ${SOURCE+x} ]] ||  [[ -z ${MIRROR+x} ]] ; then
+    usage
+    exit 1
+fi
+
+echo "==> Syncing $SOURCE to $MIRROR ..."
+
+if [[ -d $SOURCE ]]; then
+    # source is a local working copy
+    REPO_PATH=$SOURCE
+else
+    # source is a git URL
+    if [[ -z ${REPO_PATH+x} ]]; then
+        REPO_PATH=$(basename $SOURCE .git)
+    fi
+
+    if [[ ! -d $REPO_PATH ]]; then
+        git clone $SOURCE $REPO_PATH
+    fi
+fi
+
+cd "$REPO_PATH"
+
+git fetch origin --prune --prune-tags
+
+# Checkout all remote branches
+# https://stackoverflow.com/a/6300386/521946
+remote=origin ; for brname in `git branch -r | grep $remote | grep -v master | grep -v HEAD | awk '{gsub(/^[^\/]+\//,"",$1); print $1}'`; do git branch --set-upstream-to $remote/$brname $brname; done
+
+git pull origin
+
+if ! git config remote.$MIRROR_NAME.url > /dev/null; then
+    git remote add $MIRROR_NAME $MIRROR
+fi
+
+git push $MIRROR_NAME --all --prune
+git push $MIRROR_NAME --tags --prune
