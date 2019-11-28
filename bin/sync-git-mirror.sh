@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo pipefail
+set -euo pipefail
 
 MIRROR_NAME=mirror
 
@@ -61,16 +61,14 @@ if [[ -z ${SOURCE+x} ]] ||  [[ -z ${MIRROR+x} ]] ; then
     exit 1
 fi
 
-echo "==> Syncing $SOURCE to $MIRROR ..."
+echo "==> Syncing $SOURCE to $MIRROR"
 
 if [[ -d $SOURCE ]]; then
     # source is a local working copy
     REPO_PATH=$SOURCE
 else
     # source is a git URL
-    if [[ -z ${REPO_PATH+x} ]]; then
-        REPO_PATH=$(basename $SOURCE .git)
-    fi
+    REPO_PATH=${REPO_PATH:=$(basename $SOURCE .git)}
 
     if [[ ! -d $REPO_PATH ]]; then
         git clone $SOURCE $REPO_PATH
@@ -83,12 +81,14 @@ git fetch origin --prune --prune-tags
 
 # Checkout all remote branches
 # https://stackoverflow.com/a/6300386/521946
-remote=origin ; for brname in `git branch -r | grep $remote | grep -v master | grep -v HEAD | awk '{gsub(/^[^\/]+\//,"",$1); print $1}'`; do git branch --set-upstream-to $remote/$brname $brname; done
+remote=origin ; for brname in `git branch -r | grep $remote | grep -v master | grep -v HEAD | awk '{gsub(/^[^\/]+\//,"",$1); print $1}'`; do git branch --track $brname $remote/$brname || true; done 2>/dev/null
 
 git pull origin
 
 if ! git config remote.$MIRROR_NAME.url > /dev/null; then
     git remote add $MIRROR_NAME $MIRROR
+else
+    git remote set-url $MIRROR_NAME $MIRROR
 fi
 
 git push $MIRROR_NAME --all --prune
