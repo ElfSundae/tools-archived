@@ -1,6 +1,6 @@
 #!/bin/bash
 
-trap "echo 'Exit by SIGNAL.'; exit" SIGHUP SIGINT SIGTERM
+trap "exit" SIGHUP SIGINT SIGTERM
 
 if [[ $# < 1 ]]; then
     echo "Retry command execution if failed."
