@@ -56,7 +56,7 @@ while [[ $# > 0 ]]; do
     esac
 done
 
-if [[ -z ${SOURCE+x} ]] ||  [[ -z ${MIRROR+x} ]] ; then
+if [[ -z ${SOURCE+x} || -z ${MIRROR+x} ]] ; then
     usage
     exit 1
 fi
