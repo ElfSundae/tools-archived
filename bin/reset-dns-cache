@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# https://support.apple.com/zh-cn/HT202516
-sudo killall -HUP mDNSResponder
