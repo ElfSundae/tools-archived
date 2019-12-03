@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# export EDITOR="subl_wait"
-#
-# Fix issue: crontab: subl -w: No such file or directory
-
-subl -w $*
